@@ -77,7 +77,7 @@ const FooterSection = () => {
     const handleLinkMouseOut = (e) => e.target.style.color = '#E393A7';
 
     return(
-        <footer style={footerStyle}>
+        <footer style={footerStyle} id="footer">
             <div style={containerStyle}>
                 <div style={gridStyle}>
                     {/* Column About MyCloth */}

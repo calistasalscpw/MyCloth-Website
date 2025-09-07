@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 
 import HeroSection from '../components/HeroSection';
-import FooterSection from "../components/FooterSection";
+import ProductSection from "../components/ProductSection";
 
 const Home = () => {
     return(
         <>
             <HeroSection/>
-            <FooterSection/>
+            <ProductSection/>
         </>
     )
 }
