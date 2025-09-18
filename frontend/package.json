@@ -1,5 +1,5 @@
 {
-  "name": "codespaces-react",
+  "name": "mycloth",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -25,10 +25,12 @@
     "postcss": "^8.4.31"
   },
   "scripts": {
+    "dev": "vite",
     "start": "BROWSER=none WDS_SOCKET_PORT=0 vite --port 3000",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "lint": "eslint ."
   },
   "eslintConfig": {
     "extends": [
