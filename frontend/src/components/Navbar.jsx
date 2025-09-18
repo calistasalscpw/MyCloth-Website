@@ -1,13 +1,98 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 import { MenuOutlined, CloseOutlined } from '@ant-design/icons';
+
+// --- Styled Components ---
+
+const Header = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
+
+  ${({ $isScrolled }) =>
+    $isScrolled &&
+    css`
+      background-color: rgba(255, 233, 238, 0.8);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    `}
+`;
+
+const Logo = styled(Link)`
+  color: #E63B7A;
+  font-weight: bold;
+  font-size: 1.5rem;
+  font-family: 'Playfair Display', serif;
+  text-decoration: none;
+`;
+
+const DesktopNav = styled.nav`
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const NavLink = styled(Link)`
+  color: #641632;
+  text-decoration: none;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  padding-bottom: 4px;
+`;
+
+const MobileMenuIcon = styled.div`
+  display: none;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
+const MobileMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: rgba(255, 233, 238, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+  transform: ${({ open }) => (open ? 'translateY(0)' : 'translateY(-150%)')};
+  transition: transform 0.3s ease-in-out;
+  opacity: ${({ open }) => (open ? '1' : '0')};
+
+  a {
+    padding: 1rem;
+    color: #641632;
+    text-decoration: none;
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
+  }
+`;
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
 
-    // --- Event Listener for Scroll Effect ---
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 10);
@@ -17,7 +102,6 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
     
-    // --- Navigation Handlers ---
     const handleScrollToFooter = (e) => {
         e.preventDefault();
         const footer = document.getElementById('footer');
@@ -31,122 +115,28 @@ const Navbar = () => {
         navigate(path);
         setIsMobileMenuOpen(false);
     };
-
-    // --- Style Objects ---
-    const navbarStyle = {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        padding: '1rem 1.5rem',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        zIndex: 1000,
-        transition: 'background-color 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease',
-        ...(isScrolled && {
-            backgroundColor: 'rgba(255, 233, 238, 0.8)',
-            backdropFilter: 'blur(10px)',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.05)'
-        })
-    };
-    
-    const logoStyle = {
-        color: '#E63B7A',
-        fontWeight: 'bold',
-        fontSize: '1.5rem',
-        fontFamily: "'Playfair Display', serif",
-        textDecoration: 'none'
-    };
-    
-    const navLinksStyle = {
-        display: 'flex',
-        gap: '2rem',
-        alignItems: 'center'
-    };
-
-    const navLinkStyle = {
-        color: '#641632',
-        textDecoration: 'none',
-        fontWeight: '500',
-        fontFamily: "'Poppins', sans-serif",
-        position: 'relative',
-        paddingBottom: '4px'
-    };
     
     return (
-        <header style={navbarStyle}>
-            <Link to="/" style={logoStyle}>MyCloth</Link>
+        <Header $isScrolled={isScrolled}>
+            <Logo to="/">MyCloth</Logo>
             
-            {/* Desktop Navigation */}
-            <nav style={navLinksStyle} className="desktop-nav">
-                <a href="#footer" onClick={handleScrollToFooter} style={navLinkStyle}>Tentang</a>
-                <Link to="/produk" style={navLinkStyle}>Produk</Link>
-                <a href="#footer" onClick={handleScrollToFooter} style={navLinkStyle}>Kontak</a>
-            </nav>
+            <DesktopNav>
+                <NavLink to="/#footer" onClick={handleScrollToFooter}>Tentang</NavLink>
+                <NavLink to="/produk">Produk</NavLink>
+                <NavLink to="/#footer" onClick={handleScrollToFooter}>Kontak</NavLink>
+            </DesktopNav>
 
-            {/* Mobile Menu Icon */}
-            <div className="mobile-menu-icon" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            <MobileMenuIcon onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
                 {isMobileMenuOpen ? <CloseOutlined style={{ fontSize: '24px', color: '#641632' }} /> : <MenuOutlined style={{ fontSize: '24px', color: '#641632' }} />}
-            </div>
+            </MobileMenuIcon>
 
-            {/* Mobile Menu Dropdown */}
-            <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
-                <a href="#footer" onClick={handleScrollToFooter}>Tentang</a>
-                <Link to="/produk" onClick={() => handleNavigate('/produk')}>Produk</Link>
-                <a href="#footer" onClick={handleScrollToFooter}>Kontak</a>
-            </div>
-            
-            {/* --- CSS for Mobile Responsiveness --- */}
-            <style>{`
-                .desktop-nav {
-                    display: flex;
-                }
-                .mobile-menu-icon {
-                    display: none;
-                    cursor: pointer;
-                }
-                .mobile-menu {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    position: absolute;
-                    top: 100%;
-                    left: 0;
-                    width: 100%;
-                    background-color: rgba(255, 233, 238, 0.95);
-                    backdrop-filter: blur(10px);
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                    padding: 1rem 0;
-                    transform: translateY(-150%);
-                    transition: transform 0.3s ease-in-out;
-                    opacity: 0;
-                }
-                .mobile-menu.open {
-                    transform: translateY(0);
-                    opacity: 1;
-                }
-                .mobile-menu a {
-                    padding: 1rem;
-                    color: #641632;
-                    text-decoration: none;
-                    font-weight: 500;
-                    width: 100%;
-                    text-align: center;
-                }
-
-                @media (max-width: 768px) {
-                    .desktop-nav {
-                        display: none;
-                    }
-                    .mobile-menu-icon {
-                        display: block;
-                    }
-                }
-            `}</style>
-        </header>
+            <MobileMenu open={isMobileMenuOpen}>
+                <NavLink to="/#footer" onClick={handleScrollToFooter}>Tentang</NavLink>
+                <NavLink to="/produk" onClick={() => handleNavigate('/produk')}>Produk</NavLink>
+                <NavLink to="/#footer" onClick={handleScrollToFooter}>Kontak</NavLink>
+            </MobileMenu>
+        </Header>
     );
 };
 
 export default Navbar;
-

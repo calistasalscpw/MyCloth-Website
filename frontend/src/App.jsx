@@ -4,7 +4,8 @@ import React from 'react';
 
 import Navbar from './components/Navbar';
 import FooterSection from './components/FooterSection';
-import Home from './pages/Home'
+import Home from './pages/Home';
+import Login from './pages/Login';
 
 import { Layout } from 'antd';
 
@@ -18,6 +19,7 @@ function App() {
       <Content>
         <Routes>
           <Route path='/' element={<Home/>}/>
+          <Route path='/auth/login' element={<Login/>}/>
         </Routes>
       </Content>
       <FooterSection/>
