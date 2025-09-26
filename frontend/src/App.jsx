@@ -6,6 +6,8 @@ import Navbar from './components/Navbar';
 import FooterSection from './components/FooterSection';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Product from './pages/Product';
+import ProductDetail from './pages/ProductDetail';
 
 import { Layout } from 'antd';
 
@@ -20,6 +22,8 @@ function App() {
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/auth/login' element={<Login/>}/>
+          <Route path='/produk' element={<Product/>}/>
+          <Route path='/produk/:productId' element={<ProductDetail/>}/>
         </Routes>
       </Content>
       <FooterSection/>

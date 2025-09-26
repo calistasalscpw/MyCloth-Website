@@ -32,6 +32,10 @@ const Logo = styled(Link)`
   font-size: 1.5rem;
   font-family: 'Playfair Display', serif;
   text-decoration: none;
+
+  &:hover {
+    color: #E63B7A;
+  }
 `;
 
 const DesktopNav = styled.nav`
@@ -51,6 +55,10 @@ const NavLink = styled(Link)`
   font-family: 'Poppins', sans-serif;
   position: relative;
   padding-bottom: 4px;
+
+  &:hover {
+    color: #E63B7A;
+  }
 `;
 
 const MobileMenuIcon = styled.div`

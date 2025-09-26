@@ -2,60 +2,10 @@ import React, { useRef } from "react";
 import styled, { css } from 'styled-components';
 import { Card, Typography, Button } from "antd";
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { Link } from "react-router-dom";
+import { dummyData } from '../dummy-data';
 
 const { Title, Text } = Typography;
-
-// --- Data ---
-const dummyData = [
-    {
-        name: "Baju gamis",
-        description: "Katun jepang bermotif bunga sakura",
-        price: 100000,
-        size: ["M"],
-        category: ["Gamis", "Wanita"],
-        photos: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?q=80&w=405&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        isSoldOut: false
-    },
-    {
-        name: "Baju koko",
-        description: "Tersedia dengan tujuh warna",
-        price: 70000,
-        size: ["L"],
-        category: ["Muslim", "Pria"],
-        photos: "https://images.unsplash.com/photo-1516762689617-e1cffcef479d?q=80&w=411&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        isSoldOut: true
-    },
-    {
-        name: "Baju anak",
-        description: "Katun yang tersedia dalam warna biru dan pink.",
-        price: 80000,
-        size: ["M"],
-        category: ["Unisex", "Anak"],
-        photos: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=436&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        isSoldOut: false
-    },
-    {
-        name: "Daster Rumahan",
-        description: "Nyaman dipakai seharian di rumah.",
-        price: 55000,
-        photos: "https://images.unsplash.com/photo-1564584217132-2271feaeb3c5?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        isSoldOut: false
-    },
-    {
-        name: "Jaket Bomber Pria",
-        description: "Bahan kanvas, cocok untuk berkendara.",
-        price: 150000,
-        photos: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=436&auto=format&fit=crop",
-        isSoldOut: false
-    },
-    {
-        name: "Blazer Merah Wanita",
-        description: "Tampil formal dan elegan.",
-        price: 250000,
-        photos: "https://images.unsplash.com/photo-1579298245158-3de3fe48537b?q=80&w=1887&auto=format&fit=crop",
-        isSoldOut: false
-    },
-];
 
 // --- Helper Function ---
 const formatPrice = (price) => {
@@ -85,7 +35,7 @@ const SectionTitle = styled(Title)`
 `;
 
 const ScrollContainer = styled.div`
-  display: flex;
+  display: block;
   overflow-x: auto;
   padding: 0 1.5rem 1.5rem 1.5rem;
   max-width: 1200px;
@@ -99,6 +49,7 @@ const ScrollContainer = styled.div`
 const GridWrapper = styled.div`
   display: flex;
   gap: 2rem;
+  width: max-content;
 `;
 
 const ProductCard = styled(Card)`
@@ -110,6 +61,12 @@ const ProductCard = styled(Card)`
   flex: 0 0 240px;
   display: flex;
   flex-direction: column;
+  max-width: 240px;
+
+  &:hover {
+    box-shadow: 0 8px 24px #F5BFCB;
+    border: 1px solid #E393A7;
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -231,13 +188,13 @@ const ProductSection = () => {
                 />
                 <ScrollContainer ref={scrollRef}>
                     <GridWrapper>
-                        {dummyData.map((item, index) => (
+                        {dummyData.map((item) => (
+                          <Link to={`/produk/${item.id}`} key={item.id} style={{ textDecoration: 'none' }}>
                             <ProductCard
-                                key={index}
                                 hoverable
                                 cover={
                                     <ImageContainer>
-                                        <ProductImage alt={item.name} src={item.photos} $isSoldOut={item.isSoldOut} />
+                                        <ProductImage alt={item.name} src={item.photos[0]} $isSoldOut={item.isSoldOut} />
                                         {item.isSoldOut && (
                                             <SoldOutBadge>Stok Habis</SoldOutBadge>
                                         )}
@@ -257,6 +214,7 @@ const ProductSection = () => {
                                     </Price>
                                 </Content>
                             </ProductCard>
+                          </Link>
                         ))}
                     </GridWrapper>
                 </ScrollContainer>
@@ -269,9 +227,11 @@ const ProductSection = () => {
             </div>
 
             <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+              <Link to="/produk">
                 <SeeMoreButton type="default" size="large">
                     Lihat selengkapnya
                 </SeeMoreButton>
+              </Link>
             </div>
         </Section>
     );
